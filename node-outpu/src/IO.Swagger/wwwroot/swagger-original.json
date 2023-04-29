@@ -1,0 +1,387 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Rick And Morty API",
+    "description" : "API para obtener información sobre personajes, ubicaciones y episodios de Rick y Morty.",
+    "contact" : {
+      "name" : "Hogar de Cristo",
+      "url" : "http://hogardecristo.cl",
+      "email" : "knussbaum@hogardecristo.cl"
+    },
+    "license" : {
+      "name" : "API",
+      "url" : "https://www.ejemplo.como/licencia"
+    },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://{ambiente}rickandmortyapi.com/{tipo}",
+    "description" : "Rick y Morty API",
+    "variables" : {
+      "tipo" : {
+        "description" : "Variable que distingue entre la consulta REST o por Query",
+        "default" : "api",
+        "enum" : [ "api", "graphql" ]
+      },
+      "ambiente" : {
+        "description" : "Variable que distingue entre ambientes, productivo, desarrollo y QA.",
+        "default" : "",
+        "enum" : [ "", "dev", "qa" ]
+      }
+    }
+  } ],
+  "security" : [ {
+    "BasicAuth" : [ ]
+  } ],
+  "paths" : {
+    "/character" : {
+      "get" : {
+        "summary" : "Obtener todos los personajes",
+        "description" : "Obtiene una lista de todos los personajes de Rick y Morty",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Número de página para paginación",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "default" : 1
+          }
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "Filtrar por el nombre dado",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Filtrar por el estado dado (alive, dead o unknown)",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "species",
+          "in" : "query",
+          "description" : "Filtrar por la especie dada",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Filtrar por el tipo dado",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "gender",
+          "in" : "query",
+          "description" : "Filtrar por el género dado (female, male, genderless o unknown)",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Lista de personajes obtenida con éxito",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Character"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Error en la solicitud"
+          },
+          "404" : {
+            "description" : "Personajes no encontrados"
+          }
+        }
+      }
+    },
+    "/character/{id}" : {
+      "get" : {
+        "summary" : "Obtener un solo personaje por su id",
+        "description" : "Obtiene un los datos de un personaje",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Id del personaje",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Personaje exitosamente encontrado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Character"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Error en la solicitud"
+          },
+          "404" : {
+            "description" : "Personaje no encontrado"
+          }
+        }
+      }
+    },
+    "/location" : {
+      "get" : {
+        "summary" : "Obtener todas las localizaciones",
+        "description" : "Obtiene una lista de todas las localizaciones de la serie",
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "query",
+          "description" : "nombre de la localizacion",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Tipo de localizacion",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "dimesnion",
+          "in" : "query",
+          "description" : "Dimension de la localizacion",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Lista de localizaciones obtenida con éxito",
+            "content" : {
+              "application/jason" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Error en la solicitud"
+          },
+          "404" : {
+            "description" : "Localizaciones no encontrados"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ApiResponse" : {
+        "type" : "object",
+        "properties" : {
+          "info" : {
+            "$ref" : "#/components/schemas/Info"
+          },
+          "results" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Character"
+            }
+          }
+        }
+      },
+      "Info" : {
+        "type" : "object",
+        "properties" : {
+          "count" : {
+            "type" : "integer"
+          },
+          "pages" : {
+            "type" : "integer"
+          },
+          "next" : {
+            "type" : "string",
+            "format" : "uri"
+          },
+          "prev" : {
+            "type" : "string",
+            "format" : "uri",
+            "nullable" : true
+          }
+        }
+      },
+      "Character" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string"
+          },
+          "species" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "gender" : {
+            "type" : "string"
+          },
+          "origin" : {
+            "$ref" : "#/components/schemas/Origin"
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/Location"
+          },
+          "image" : {
+            "type" : "string",
+            "format" : "uri"
+          },
+          "episode" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "format" : "uri"
+            }
+          },
+          "url" : {
+            "type" : "string",
+            "format" : "uri"
+          },
+          "created" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        },
+        "example" : {
+          "image" : "http://example.com/aeiou",
+          "gender" : "gender",
+          "species" : "species",
+          "created" : "2000-01-23T04:56:07.000+00:00",
+          "origin" : {
+            "name" : "name",
+            "url" : "http://example.com/aeiou"
+          },
+          "name" : "name",
+          "location" : {
+            "created" : "created",
+            "name" : "name",
+            "residents" : [ "http://example.com/aeiou", "http://example.com/aeiou" ],
+            "id" : 6,
+            "type" : "type",
+            "dimension" : "dimension",
+            "url" : "http://example.com/aeiou"
+          },
+          "episode" : [ "http://example.com/aeiou", "http://example.com/aeiou" ],
+          "id" : 0,
+          "type" : "type",
+          "url" : "http://example.com/aeiou",
+          "status" : "status"
+        }
+      },
+      "Origin" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "url" : {
+            "type" : "string",
+            "format" : "uri"
+          }
+        },
+        "example" : {
+          "name" : "name",
+          "url" : "http://example.com/aeiou"
+        }
+      },
+      "Location" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "dimension" : {
+            "type" : "string"
+          },
+          "residents" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "format" : "uri"
+            }
+          },
+          "url" : {
+            "type" : "string",
+            "format" : "uri"
+          },
+          "created" : {
+            "type" : "string"
+          }
+        },
+        "example" : {
+          "created" : "created",
+          "name" : "name",
+          "residents" : [ "http://example.com/aeiou", "http://example.com/aeiou" ],
+          "id" : 6,
+          "type" : "type",
+          "dimension" : "dimension",
+          "url" : "http://example.com/aeiou"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "BasicAuth" : {
+        "type" : "http",
+        "scheme" : "basic"
+      }
+    }
+  }
+}
